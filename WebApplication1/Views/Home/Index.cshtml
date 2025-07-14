@@ -1,0 +1,176 @@
+﻿@using WebApplication1.Helpers
+@using WebApplication1.Models.Home
+@model IndexViewModel
+
+@{
+    ViewData["Title"] = "Главная страница";
+}
+
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-primary mb-3">
+            <i class="bi bi-house-door"></i> Добро пожаловать
+        </h1>
+        <p class="lead text-muted">
+            Система управления студентами - удобный инструмент для администрирования учебного процесса
+        </p>
+    </div>
+
+    <div class="row g-4">
+        <!-- Карточка студентов -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm hover-effect">
+                <div class="card-body text-center p-4">
+                    <div class="icon-wrapper bg-primary-light mb-3">
+                        <i class="bi bi-people-fill text-primary fs-1"></i>
+                    </div>
+                    <h3 class="h5 fw-bold mb-2">Управление студентами</h3>
+                    <p class="text-muted mb-4">
+                        Просмотр, добавление и редактирование информации о студентах
+                    </p>
+                    <a href="@Url.Action("Index", "Student")" class="btn btn-primary stretched-link">
+                        Перейти <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Карточка отделений -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm hover-effect">
+                <div class="card-body text-center p-4">
+                    <div class="icon-wrapper bg-success-light mb-3">
+                        <i class="bi bi-building text-success fs-1"></i>
+                    </div>
+                    <h3 class="h5 fw-bold mb-2">Факультеты</h3>
+                    <p class="text-muted mb-4">
+                        Управление учебными факультетами и направлениями подготовки
+                    </p>
+                    <a asp-controller="Department" asp-action="Index" class="btn btn-success stretched-link">
+                        Перейти <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Карточка статистики -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm hover-effect">
+                <div class="card-body text-center p-4">
+                    <div class="icon-wrapper bg-info-light mb-3">
+                        <i class="bi bi-graph-up text-info fs-1"></i>
+                    </div>
+                    <h3 class="h5 fw-bold mb-2">Аналитика</h3>
+                    <p class="text-muted mb-4">
+                        Статистика и отчеты по успеваемости студентов
+                    </p>
+                    <a href="@Url.Action("Index", "Analytics")" class="btn btn-info stretched-link">
+                        Перейти <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0">
+                    <h3 class="h5 fw-bold mb-0"><i class="bi bi-clock-history me-2"></i>Последние действия</h3>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        @* <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
+                            <span>Добавлен новый студент</span>
+                            <small class="text-muted">2 минуты назад</small>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
+                            <span>Обновлено отделение "Информатика"</span>
+                            <small class="text-muted">15 минут назад</small>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
+                            <span>Создан новый отчет</span>
+                            <small class="text-muted">1 час назад</small>
+                        </li> *@
+
+                        @foreach (var log in Model.RecentActivities)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
+                                <span>@log.ShortDescription</span>
+                                <small class="text-muted">
+                                    @log.CreatedAt
+                                </small>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0">
+                    <h3 class="h5 fw-bold mb-0"><i class="bi bi-exclamation-circle me-2"></i>Быстрые действия</h3>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="@Url.Action("Create", "Student")" class="btn btn-outline-primary text-start">
+                            <i class="bi bi-plus-circle me-2"></i>Добавить нового студента
+                        </a> 
+                        <a asp-controller="Reports" asp-action="Generate" class="btn btn-outline-success text-start">
+                            <i class="bi bi-file-earmark-text me-2"></i>Сформировать отчет
+                        </a>
+                        <a asp-controller="Settings" asp-action="Index" class="btn btn-outline-secondary text-start">
+                            <i class="bi bi-gear me-2"></i>Настройки системы
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .hover-effect {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+            .hover-effect:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1) !important;
+            }
+
+        .icon-wrapper {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .bg-primary-light {
+            background-color: rgba(13, 110, 253, 0.1);
+        }
+
+        .bg-success-light {
+            background-color: rgba(25, 135, 84, 0.1);
+        }
+
+        .bg-info-light {
+            background-color: rgba(13, 202, 240, 0.1);
+        }
+
+        .stretched-link::after {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            content: "";
+        }
+    </style>
+}

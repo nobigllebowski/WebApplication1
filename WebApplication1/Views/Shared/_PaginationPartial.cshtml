@@ -1,0 +1,45 @@
+﻿@using WebApplication1.Models.Pagination
+@model PaginationInfoViewModel
+
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        @if (Model.HasPreviousPage)
+        {
+            <li class="page-item">
+                <a class="page-link"
+                   asp-action="@ViewContext.RouteData.Values["action"]"
+                   asp-route-pageNumber="@(Model.CurrentPage - 1)"
+                   asp-all-route-data="@Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString())">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+            </li>
+        }
+
+        @if (Model.TotalPages > 1)
+        {
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="@ViewContext.RouteData.Values["action"]"
+                       asp-route-pageNumber="@i"
+                       asp-all-route-data="@Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString())">
+                        @i
+                    </a>
+                </li>
+            }
+        }
+
+        @if (Model.HasNextPage)
+        {
+            <li class="page-item">
+                <a class="page-link"
+                   asp-action="@ViewContext.RouteData.Values["action"]"
+                   asp-route-pageNumber="@(Model.CurrentPage + 1)"
+                   asp-all-route-data="@Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString())">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+        }
+    </ul>
+</nav>

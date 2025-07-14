@@ -1,0 +1,41 @@
+﻿@model string 
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Подтверждение удаления</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Вы действительно хотите удалить @Model <span id="entityName"></span>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <form id="deleteForm" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" id="entityId" />
+                    <button type="submit" class="btn btn-danger">Удалить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteModal = document.getElementById('deleteModal');
+
+        deleteModal.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget;
+            const entityId = button.getAttribute('data-bs-entity-id');
+            const entityName = button.getAttribute('data-bs-entity-name');
+
+            document.getElementById('entityName').textContent = entityName;
+            document.getElementById('entityId').value = entityId;
+
+            const actionUrl = button.getAttribute('data-bs-action-url') ||
+                             `/${window.location.pathname.split('/')[1]}/Delete/${entityId}`;
+            document.getElementById('deleteForm').action = actionUrl;
+        });
+    });
+</script>

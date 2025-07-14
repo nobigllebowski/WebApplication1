@@ -1,0 +1,123 @@
+﻿@using WebApplication1.Models.Analytics
+@model AnalyticsViewModel
+@{
+    ViewData["Title"] = "Аналитика успеваемости";
+}
+
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="text-primary">
+                <i class="bi bi-graph-up"></i> @ViewData["Title"]
+            </h2>
+        </div>
+    </div>
+
+    <!-- Ключевые метрики -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h3 class="card-title text-muted">Всего студентов</h3>
+                    <p class="display-4 text-primary">@Model.TotalStudents</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h3 class="card-title text-muted">Средний балл</h3>
+                    <p class="display-4 text-info">@Model.AverageScore.ToString("0.00")</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h3 class="card-title text-muted">Лучший факультет</h3>
+                    <p class="display-4 text-success">
+                        @(Model.DepartmentsStats.Any() ? Model.DepartmentsStats.OrderByDescending(d => d.AvgScore).First().Name : "Нет данных")
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Графики и диаграммы -->
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="bi bi-bar-chart"></i> Распределение по оценкам</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="scoreChart" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="bi bi-building"></i> Статистика по факультетам</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Факультет</th>
+                                    <th>Студентов</th>
+                                    <th>Ср. балл</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var dept in Model.DepartmentsStats.OrderByDescending(d => d.AvgScore))
+                                {
+                                    <tr>
+                                        <td>@dept.Name</td>
+                                        <td>@dept.StudentCount</td>
+                                        <td>@dept.AvgScore.ToString("0.00")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // График распределения оценок
+        const scoreCtx = document.getElementById('scoreChart').getContext('2d');
+        const scoreChart = new Chart(scoreCtx, {
+            type: 'doughnut',
+            data: {
+                labels: @Json.Serialize(Model.ScoreDistribution.Keys),
+                datasets: [{
+                    data: @Json.Serialize(Model.ScoreDistribution.Values),
+                    backgroundColor: [
+                        '#2ecc71',
+                        '#3498db',
+                        '#f39c12',
+                        '#e74c3c'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+    </script>
+}
