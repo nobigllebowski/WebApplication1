@@ -62,7 +62,7 @@ namespace WebApplication1.Controllers
         // GET: Student/Create
         public async Task<IActionResult> Create()
         {
-            var departments = await _departmentService.GetAllDepartmentsAsync();
+            var departments = await _departmentService.GetAllActiveDepartmentsAsync();
             var model = new CreateStudentViewModel
             {
                 // Инициализация даты по умолчанию
