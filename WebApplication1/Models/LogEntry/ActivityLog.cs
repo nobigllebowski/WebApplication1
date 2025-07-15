@@ -1,4 +1,4 @@
-﻿namespace WebApplication1.Models.Log
+﻿namespace WebApplication1.Models.LogEntry
 {
     public class ActivityLog
     {

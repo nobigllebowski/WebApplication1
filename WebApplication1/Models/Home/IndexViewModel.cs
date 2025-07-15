@@ -1,4 +1,4 @@
-﻿using WebApplication1.Models.Log;
+﻿using WebApplication1.Models.LogEntry;
 
 namespace WebApplication1.Models.Home
 {

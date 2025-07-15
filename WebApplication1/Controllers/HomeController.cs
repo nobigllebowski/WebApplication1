@@ -1,10 +1,9 @@
 ﻿using Application.DTOs.LogEntry;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using WebApplication1.Helpers;
 using WebApplication1.Models.Home;
-using WebApplication1.Models.Log;
+using WebApplication1.Models.LogEntry;
 
 namespace WebApplication1.Controllers
 {
