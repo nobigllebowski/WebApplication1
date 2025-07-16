@@ -1,0 +1,81 @@
+﻿@using WebApplication1.Models.Course
+@model CourseListViewModel
+
+@{
+    ViewData["Title"] = "Предметы";
+}
+
+<h1>Список предметов</h1>
+
+<!-- Форма фильтрации -->
+<div class="container py-5">
+    <div class="card filter-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Фильтры студентов</h5>
+            <a href="@Url.Action("Create")" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> Добавить предмет
+            </a>
+        </div>
+        <div class="card-body">
+            <form method="get" asp-action="Index" class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="Filter.NameFilter" class="form-label">Наименование предмета</label>
+                    <input asp-for="Filter.NameFilter" class="form-control" placeholder="Введите предмет">
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="bi bi-search"></i> Поиск
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-counterclockwise"></i> Сбросить
+                    </a>
+                </div>
+                <input type="hidden" asp-for="Filter.PageNumber" value="1" />
+                <input type="hidden" asp-for="Filter.PageSize" />
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Список предметов</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Наименование</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var course in Model.Courses)
+                        {
+                            <tr>
+                                <td>@course.Name</td>
+                                <td class="action-buttons">
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-danger"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal"
+                                            data-bs-entity-id="@course.Id"
+                                            data-bs-entity-name="@course.Name"
+                                            data-bs-action-url="@Url.Action("Delete", "Course", new { id = course.Id })">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+
+                                    <!-- Подключение модального окна -->
+                                    <partial name="_DeleteConfirmationModal" model='"предмет"' />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @await Html.PartialAsync("_PaginationPartial", Model.PaginationInfo)
+        </div>
+    </div>
+</div>
+

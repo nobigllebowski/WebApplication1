@@ -31,6 +31,7 @@ namespace Application.Services
         {
             var courses = _courseRepo.GetFilteredCourses(
                 nameFilter: filter.NameFilter,
+                isActive: filter.IsActive,
                 pageNumber: filter.Page,
                 pageSize: filter.PageSize);
 
@@ -46,6 +47,12 @@ namespace Application.Services
         public async Task<List<CourseDto>> GetAllCoursesAsync()
         {
             var courses = await _courseRepo.GetAllAsync();
+            return _mapper.Map<List<CourseDto>>(courses);
+        }
+
+        public async Task<List<CourseDto>> GetAllActiveCoursesAsync()
+        {
+            var courses = await _courseRepo.GetAllActiveAsync();
             return _mapper.Map<List<CourseDto>>(courses);
         }
 

@@ -7,6 +7,7 @@ namespace Infrastructure.Persistence.Repositories.Base
     {
         PaginatedList<Course> GetFilteredCourses(
             string? nameFilter = null,
+            bool isActive = true,
             int pageNumber = 1,
             int pageSize = 10);
     }

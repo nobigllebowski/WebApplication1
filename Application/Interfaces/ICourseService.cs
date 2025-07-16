@@ -8,6 +8,7 @@ namespace Application.Interfaces
         Task<CourseDto> GetCourseByIdAsync(Guid id);
         PaginatedList<CourseDto> GetCourses(CourseFilterDto filter);
         Task<List<CourseDto>> GetAllCoursesAsync();
+        Task<List<CourseDto>> GetAllActiveCoursesAsync();
 
         Task CreateCourseAsync(CreateCourseDto dto);
         Task UpdateCourseAsync(UpdateCourseDto dto);

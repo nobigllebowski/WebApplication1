@@ -8,7 +8,8 @@ namespace Application.Mappings
     {
         public CourseProfile()
         {
-            CreateMap<Course, CourseDto>();
+            CreateMap<Course, CourseDto>()
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => !src.IsDeleted));
 
             CreateMap<UpdateCourseDto, Course>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore());

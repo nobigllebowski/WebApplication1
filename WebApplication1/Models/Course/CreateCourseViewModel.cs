@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Application.DTOs.Course
+namespace WebApplication1.Models.Course
 {
-    public class CreateCourseDto
+    public class CreateCourseViewModel
     {
         [Required]
         public string Name { get; set; }

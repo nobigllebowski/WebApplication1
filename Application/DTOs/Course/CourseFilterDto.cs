@@ -1,7 +1,10 @@
-﻿namespace Application.DTOs.Course
+﻿using Common.Filters;
+
+namespace Application.DTOs.Course
 {
-    public record CourseFilterDto(
-        string? NameFilter = null,
-        int Page = 1,
-        int PageSize = 20);
+    public class CourseFilterDto : PaginationFilter
+    {
+        public string? NameFilter { get; set; }
+        public bool IsActive { get;set; }
+    }
 }

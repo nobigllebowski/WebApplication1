@@ -1,8 +1,8 @@
-﻿@using WebApplication1.Models.Department
-@model CreateDepartmentViewModel
+﻿@using WebApplication1.Models.Course
+@model CreateCourseViewModel
 
 @{
-    ViewData["Title"] = "Добавить новый факультет";
+    ViewData["Title"] = "Добавить новый предмет";
 }
 
 <div class="container py-5">
@@ -17,17 +17,17 @@
                     <div class="col-md-6">
 
                         <div class="mb-3">
-                            <label asp-for="@Model.Name" class="form-label">Наименование факультета</label>
+                            <label asp-for="@Model.Name" class="form-label">Наименование предмета</label>
                             <input asp-for="@Model.Name" class="form-control" required />
-                            <div class="invalid-feedback">Пожалуйста, укажите наименование факультета</div>
+                            <div class="invalid-feedback">Пожалуйста, укажите наименование предмета</div>
                         </div>
                     </div>
 
-                   
+
                 </div>
 
                 <div class="mt-4 d-flex justify-content-between">
-                    <a href="@Url.Action("Index", "Department")" class="btn btn-outline-secondary">
+                    <a href="@Url.Action("Index", "Course")" class="btn btn-outline-secondary">
                         <i class="bi bi-arrow-left"></i> Назад к списку
                     </a>
                     <button type="submit" class="btn btn-primary">

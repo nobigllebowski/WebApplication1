@@ -1,7 +1,10 @@
 ﻿namespace Application.DTOs.Course
 {
-    public record CourseDto(
-        Guid Id,
-        string Name,
-        bool IsActive);
+    public record CourseDto
+    {
+        public Guid Id { get;set; }
+        public string Name { get; set; }
+        public bool IsActive { get; set; }
+        
+    }
 }

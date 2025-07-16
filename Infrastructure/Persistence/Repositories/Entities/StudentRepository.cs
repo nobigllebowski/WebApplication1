@@ -32,10 +32,7 @@ namespace Infrastructure.Persistence.Repositories.Entities
 
             var allStudents = await connection.QueryAsync<Student>("SELECT * FROM Students");
 
-            if (isActive)
-            {
-                allStudents = allStudents.Where(s => !s.IsDeleted);
-            }
+            allStudents = allStudents.WhereIf(isActive, s => !s.IsDeleted);
 
             if (!string.IsNullOrWhiteSpace(nameFilter))
             {
@@ -60,16 +57,11 @@ namespace Infrastructure.Persistence.Repositories.Entities
                 };
             }
 
-            var query = allStudents.AsQueryable();
-
-            query = query.WhereAgeBetween(minAge, maxAge);
-
-            if (departmentId.HasValue)
-            {
-                query = query.Where(s => s.DepartmentId == departmentId.Value);
-            }
-
-            query = query.OrderBy(s => s.LastName).ThenBy(s => s.FirstName);
+            var query = allStudents.AsQueryable()
+                .WhereAgeBetween(minAge, maxAge)
+                .WhereIf(departmentId.HasValue, s => s.DepartmentId == departmentId.Value)
+                .OrderBy(s => s.LastName)
+                .ThenBy(s => s.FirstName);
 
             // Применяем пагинацию
             return PaginatedList<Student>.Create(query, pageNumber, pageSize);
